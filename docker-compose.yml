@@ -1,0 +1,22 @@
+services:
+  jupyter:
+    build:
+      context: .
+      dockerfile: containers/Dockerfile.juypter
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION:-3.13-slim}
+        JUPYTERLAB_VERSION: ${JUPYTERLAB_VERSION:-~=4.0}
+        NOTEBOOK_VERSION: ${NOTEBOOK_VERSION:-~=7.2}
+    image: jupyter-ai-coding:latest
+    volumes:
+      - workspace_data:/home/jovian/workspace:rw,z
+    ports:
+      - "${JUPYTER_PORT:-8888}:8888"
+    env_file:
+      - .local/.env
+    environment:
+      JUPYTER_PORT: ${JUPYTER_PORT:-8888}
+    restart: unless-stopped
+volumes:
+  workspace_data:
+    driver: local

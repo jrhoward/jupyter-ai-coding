@@ -1,0 +1,24 @@
+ARG PYTHON_VERSION=3.13-slim
+FROM python:${PYTHON_VERSION}
+
+ARG JUPYTERLAB_VERSION=~=4.0
+ARG NOTEBOOK_VERSION=~=7.2
+ENV JUPYTER_PORT=8888
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+RUN adduser jovian
+USER jovian
+RUN pip install --user "jupyterlab${JUPYTERLAB_VERSION}"
+RUN pip install --user "notebook${NOTEBOOK_VERSION}"
+RUN pip install --user 'jupyter-ai[all]'
+RUN mkdir -p /home/jovian/workspace
+
+EXPOSE 8888
+
+WORKDIR /home/jovian/workspace
+ENV PATH="/home/jovian/.local/bin:${PATH}"
+
+ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888"]
+
