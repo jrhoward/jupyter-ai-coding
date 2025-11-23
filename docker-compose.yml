@@ -11,11 +11,11 @@ services:
     volumes:
       - workspace_data:/home/jovian/workspace:rw,z
     ports:
-      - "${JUPYTER_PORT:-8888}:8888"
+      - "8888:8888"
     env_file:
       - .local/.env
     environment:
-      JUPYTER_PORT: ${JUPYTER_PORT:-8888}
+      JUPYTER_PORT: 8888
     restart: unless-stopped
 volumes:
   workspace_data:
