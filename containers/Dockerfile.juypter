@@ -5,9 +5,10 @@ ARG JUPYTERLAB_VERSION=~=4.0
 ARG NOTEBOOK_VERSION=~=7.2
 
 RUN apt-get update && apt-get install -y \
-    build-essential \
+    git pandoc \
     && rm -rf /var/lib/apt/lists/*
 RUN adduser jovian
+RUN pip install --upgrade pip
 USER jovian
 RUN pip install --user "jupyterlab${JUPYTERLAB_VERSION}"
 RUN pip install --user "notebook${NOTEBOOK_VERSION}"
